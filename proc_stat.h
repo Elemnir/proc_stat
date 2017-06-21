@@ -26,10 +26,13 @@ OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
 OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 */
 
-#include "errno.h"
-#include "stdio.h"
-#include "stdlib.h"
-#include "string.h"
+#ifndef PROC_STAT_H
+#define PROC_STAT_H
+
+#include <errno.h>
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
 
 typedef struct proc_stat_t {
     int pid;
@@ -57,7 +60,7 @@ typedef struct proc_stat_t {
 } ProcStat;
 
 
-ProcStat *get_proc_stat_info() {
+static inline ProcStat *get_proc_stat_info() {
     // Allocate and initialize the struct, open the file
     FILE *procfp = fopen("/proc/self/stat", "r");
     if (procfp == NULL) {
@@ -89,7 +92,9 @@ ProcStat *get_proc_stat_info() {
     return ps;
 }
 
-void delete_proc_stat(ProcStat *ps) {
+static inline void delete_proc_stat_info(ProcStat *ps) {
     free(ps->comm);
     free(ps);
 }
+
+#endif // PROC_STAT_H
